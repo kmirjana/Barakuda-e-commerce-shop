@@ -16,7 +16,8 @@ function Navbar() {
       <div>
         <Logo />
         <h4 className='logo-text'>dashboard</h4>
-      </div><ThemeToggle/>
+      </div>
+      <div><ThemeToggle/></div>
       <div className='btn-container'><LogoutContainer/></div>
     </div>
   </Wrapper>

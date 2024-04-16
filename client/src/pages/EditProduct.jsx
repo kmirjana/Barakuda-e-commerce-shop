@@ -2,7 +2,7 @@
 function EditProduct() {
   return (
     <div>
-      <h1>Edit product</h1>
+      <h1></h1>
     </div>
   )
 }
