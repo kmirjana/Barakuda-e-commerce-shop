@@ -4,10 +4,10 @@ import express from 'express';
 import morgan from 'morgan';
 import { nanoid } from 'nanoid';
 import productRouter from './routes/productRoute.js';
-
+import mongoose from 'mongoose';
 let app = express();
 app.use(express.json());
-2
+
 if(process.env.NODE_ENV === 'development'){
     app.use(morgan('dev'));
 }
@@ -56,7 +56,14 @@ app.use((err,res) => {
     res.status(500).json({message:"Internal server error",error:err.message});
 })
 
-    const port = process.env.PORT || 3000;
+const port = process.env.PORT || 3000;
+
+try {
+    await mongoose.connect(process.env.MONGO_URI)
+} catch (error) {
+
+    process.exit(1)
+}
 app.listen(port, function(){
     console.log(`Server is running on port ${port}`);
 })
