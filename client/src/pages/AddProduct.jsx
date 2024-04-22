@@ -1,9 +1,10 @@
+
 function AddProduct() {
   return (
     <div>
       <h1></h1>
     </div>
-  );
+  )
 }
 
-export default AddProduct;
+export default AddProduct

@@ -1,50 +1,54 @@
 import { nanoid } from "nanoid"
-import ProductModel from "../models/productModel.js"
 
+
+let products=[
+    {id:nanoid(),name:"salmon",weight:"2400g"},
+    {id:nanoid(),name:"squids",weight:"5500g"},
+    {id:nanoid(),name:"oysters ",weight:"2200g"},
+]
 
 export const getAllProducts=async(req,res)=>{
-    const products= await ProductModel.find({name:"salmon"})
     res.status(200).json({products});
 }
 export const createProduct=async(req,res)=>{
-    try {
-           const product= await ProductModel.create(req.body)
-  res.status(201).json({product});
-    } catch (error) {
-        res.status(500).json({msg:"server error",error});
+    const {name,weight}=req.body;
+    if(!name || !weight){
+       return res.status(400).json({message:"Name and weight are required"});
     }
-
-    }
-
+    const productId=nanoid(4);
+    const product={id: productId, name, weight};
+    products.push(product);
+    res.status(200).json({product});
+}
 export const getProduct=async(req,res)=>{
     const{id}=req.params
-   const product= await ProductModel.findById(id)
+    const product=products.find(product=>product.id===id);
     if(!product){
         return res.status(404).json({ message: `Product with this ${id} not found` });
     }
-    res.status(200).json({product});
+    res.status(200).json(product);
 }
 export const deleteProduct=async(req,res)=>{
     const {id}=req.params;
-    const removedProduct=await ProductModel.findByIdAndDelete(id)
     if(!id){
        return res.status(400).json({message:"Id is required"});
+
     }
+    products=products.filter(product=>product.id!==id);
     res.status(200).json({message:"Product deleted"});
 };
 export const updatedProduct=async(req,res)=>{
     const{name, weight}=req.body;
     if(!name || !weight){
        return res.status(400).json({message:"Name and weight are required"});
+
     }
     const {id}=req.params;
     if(!id){
        return res.status(404).json({message:"Id is required"});
-    }
-    const updatedProduct=await ProductModel.findOneAndUpdate(id,req.body,{new:true});
-    if(updatedProduct){
 
     }
+    const product=products.find(product=>product.id===id);
     product.name=name;
     product.weight=weight;
     res.status(200).json({message:"Product updated",product:product});

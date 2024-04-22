@@ -1,5 +1,10 @@
+
 function DeleteProduct() {
-  return <div></div>;
+  return (
+    <div>
+
+    </div>
+  )
 }
 
-export default DeleteProduct;
+export default DeleteProduct
