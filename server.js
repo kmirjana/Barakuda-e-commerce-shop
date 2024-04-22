@@ -1,69 +1,78 @@
-import * as dotenv from 'dotenv';
+import "express-async-errors";
+import * as dotenv from "dotenv";
 dotenv.config();
-import express from 'express';
-import morgan from 'morgan';
-import { nanoid } from 'nanoid';
-import productRouter from './routes/productRoute.js';
-import mongoose from 'mongoose';
+import express from "express";
 let app = express();
+import morgan from "morgan";
+import { nanoid } from "nanoid";
+import mongoose from "mongoose";
+import productRouter from "./routes/productRoute.js";
+
 app.use(express.json());
 
-if(process.env.NODE_ENV === 'development'){
-    app.use(morgan('dev'));
+if (process.env.NODE_ENV === "development") {
+  app.use(morgan("dev"));
 }
 
-let products=[
-    {id:nanoid(),name:"salmon",weight:"2400g"},
-    {id:nanoid(),name:"squids",weight:"5500g"},
-    {id:nanoid(),name:"oysters ",weight:"2200g"},
-]
+let products = [
+  { id: nanoid(), name: "salmon", weight: "2400g" },
+  { id: nanoid(), name: "squids", weight: "5500g" },
+  { id: nanoid(), name: "oysters ", weight: "2200g" },
+];
 
-app.get('/', function(req, res){
-    res.send('Hello World');
-})
-app.post('/',(req, res)=>{
-    res.json({message:'data recieved',result:req.body});
+app.get("/", function (req, res) {
+  res.send("Hello World");
 });
-app.use("/api/v1/products",productRouter);
+app.post("/", (req, res) => {
+  res.json({ message: "data recieved", result: req.body });
+});
+app.use("/api/v1/products", productRouter);
 // ROUTES MOVED TO PORDUCT CONTROLER
 
-/* app.get('/api/v1/products',(req,res)=>{
-    res.status(200).json({products});
+app.get("/api/v1/products", (req, res) => {
+  res.status(200).json({ products });
 });
-app.post('/api/v1/products',(req,res)=>{
-   const {id, name, weight} = req.body;
-   if(!name || !weight){
-    return res.status(400).json({message:"Name and weight are required"});
-
-   }
-   const productId=nanoid(4);
-   const product ={id, name, weight}
-   products.push(product);
-   res.status(201).json({product});
-})
-app.get('/api/v1/products/:id',(req,res)=>{
-    const {id}=req.params;
-    const product= products.find(product => product.id === id);
-    if(!product){
-        return res.status(404).json({ message: `Product with this ${id} not found` });
-    }
-    res.status(200).json(product);
-}) */
-app.use("*", (req, res) => {
-    res.status(404).json({message:"Page not found"});
+app.post("/api/v1/products", (req, res) => {
+  const { id, name, weight } = req.body;
+  if (!name || !weight) {
+    return res.status(400).json({ message: "Name and weight are required" });
+  }
+  const productId = nanoid(4);
+  const product = { id, name, weight };
+  products.push(product);
+  res.status(201).json({ product });
 });
-app.use((err,res) => {
-    res.status(500).json({message:"Internal server error",error:err.message});
-})
+app.get("/api/v1/products/:id", (req, res) => {
+  const { id } = req.params;
+  const product = products.find((product) => product.id === id);
+  if (!product) {
+    return res
+      .status(404)
+      .json({ message: `Product with this ${id} not found` });
+  }
+  res.status(200).json(product);
+});
 
 const port = process.env.PORT || 3000;
 
-try {
-    await mongoose.connect(process.env.MONGO_URI)
-} catch (error) {
+const uri =
+  "mongodb+srv://mirjanakrneta:Barakuda123@cluster0.pthfis9.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
 
-    process.exit(1)
-}
-app.listen(port, function(){
+app.use("*", (req, res) => {
+  res.status(404).json({ message: "Page not found" });
+});
+
+app.use((err, res) => {
+  res
+    .status(500)
+    .json({ message: "Internal server error", error: err.message });
+});
+
+try {
+  await mongoose.connect(process.env.MONGO_URI);
+  app.listen(port, function () {
     console.log(`Server is running on port ${port}`);
-})
+  });
+} catch (error) {
+  process.exit(1);
+}

@@ -6,20 +6,23 @@ import { NavLink } from "react-router-dom";
 import Logo from "./Logo";
 
 function BigSidebar() {
-const {showSidebar}=useDashboardContext();
+  const { showSidebar } = useDashboardContext();
   return (
-<Wrapper>
-<div className={showSidebar ? "sidebar-container " : "sidebar-container show-sidebar"}>
-  <div className="content">
-    <header>
-      <Logo />
-    </header>
-    <Navlinks />
-  </div>
-</div>
-</Wrapper>
-
-  )
+    <Wrapper>
+      <div
+        className={
+          showSidebar ? "sidebar-container " : "sidebar-container show-sidebar"
+        }
+      >
+        <div className="content">
+          <header>
+            <Logo />
+          </header>
+          <Navlinks />
+        </div>
+      </div>
+    </Wrapper>
+  );
 }
 
-export default BigSidebar
+export default BigSidebar;

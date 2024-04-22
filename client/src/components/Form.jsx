@@ -1,15 +1,21 @@
+import PropTypes from "prop-types";
 
-import PropTypes from 'prop-types';
-
-function FormRow({type, name,labelText ,defaultValue}) {
+function FormRow({ type, name, labelText, defaultValue }) {
   return (
-    <div className='form-row'>
-          <label htmlFor={name} className="form-label" >
-            {labelText || name}
-          </label>
-          <input type={type} id={name} name={name} className="form-input" defaultValue={defaultValue || " "} required/>
-        </div>
-  )
+    <div className="form-row">
+      <label htmlFor={name} className="form-label">
+        {labelText || name}
+      </label>
+      <input
+        type={type}
+        id={name}
+        name={name}
+        className="form-input"
+        defaultValue={defaultValue || " "}
+        required
+      />
+    </div>
+  );
 }
 
 FormRow.propTypes = {

@@ -13,13 +13,13 @@ const ProductSchema=new mongoose.Schema({
     },
     experationDate:{
         enum:['fresh','frozen','canned','dried','pickled','fermented','smoked','cured','aged','preserved','spiced','seasoned','marinated','brined','glazed','coated','breaded','battered','stuffed','filled','rolled','wrapped','layered','infused','flavored','enhanced','fortified','enriched','sweetened','salted'],
-        default:'fresh'
+     /*    default:'fresh' */
     },
     costumerLocation:{
         type:String,
-        default:"Ljubljana"
+      /*   default:"Ljubljana" */
     },
-    timestamps: true
+    timestamps: Boolean,
 });
 
 export default mongoose.model('Product',ProductSchema);
