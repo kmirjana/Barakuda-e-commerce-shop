@@ -55,13 +55,10 @@ app.get("/api/v1/products/:id", (req, res) => {
 
 const port = process.env.PORT || 3000;
 
-const uri =
-  "mongodb+srv://mirjanakrneta:Barakuda123@cluster0.pthfis9.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
 
 app.use("*", (req, res) => {
   res.status(404).json({ message: "Page not found" });
-});
-
+})
 app.use((err, res) => {
   res
     .status(500)
